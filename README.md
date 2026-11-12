@@ -195,3 +195,9 @@ python privacy_protect/face_privacy_protect.py \
 ## 注意
 
 代码中各脚本默认通过 `sys.path.insert(...)` 定位到项目根目录的 `model` 包，请保证从项目根目录运行命令（或保持 `model/` 与各模块在同一级目录），否则需自行调整 `PYTHONPATH`。配置文件中出现的 `custom/output` 等历史路径，如与实际布局不一致，请按本地目录结构微调。
+
+## 许可证
+
+本项目以 **MIT License** 发布（见 `LICENSE`），可自由用于学术研究、论文复现与二次开发，也可以商用；再分发时保留版权声明与许可全文即可。
+
+请注意：`requirements.txt` 中引用的第三方组件（Ultralytics YOLOv8、OpenCLIP、SimSwap 等）以及 `model/weights/` 下需自行下载的预训练权重，仍受其各自许可证约束，本项目的 MIT 许可不覆盖它们。
