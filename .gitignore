@@ -1,0 +1,25 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.env
+
+# data / output: keep the directory skeleton, ignore the contents
+data/**
+!data/**/
+!data/**/.gitkeep
+output/**
+!output/**/
+!output/**/.gitkeep
+
+# model weights and large media
+*.pth
+*.pt
+*.onnx
+*.mp4
+*.avi
+*.zip
+
+.DS_Store
+Thumbs.db

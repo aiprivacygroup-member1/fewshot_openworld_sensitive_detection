@@ -1,0 +1,48 @@
+# ── SWAT-Style Few-Shot Object Detection Config ──
+# Classes: face (0), license_plate (1), badge (2)
+
+# ── Data paths ──
+# Hand-labeled high-quality detection data (few-shot)
+hand_labeled_dir: data/det_hand_labeled    # folder with images/ and labels/ in YOLO format
+# Auto-labeled data from the classifier (retrieval-style augmentation)
+auto_labeled_dir: custom/output/labels     # folder with .txt YOLO labels
+auto_labeled_images: data/face_badge_plate/raw_scenes  # corresponding source images
+
+# ── Model ──
+model_name: yolov8n                         # yolov8n / yolov8s / yolov8m / yolov8l
+pretrained: true                            # start from COCO pretrained weights
+
+# ── Classes ──
+num_classes: 3
+class_names: [face, license_plate, badge]
+
+# ── Image size ──
+imgsz: 640
+
+# ── Stage 1: Mixed training (auto-labeled + hand-labeled) ──
+stage1_epochs: 50
+stage1_batch: 16
+stage1_lr0: 0.001                           # initial learning rate
+stage1_lrf: 0.01                            # final lr = lr0 * lrf
+stage1_augment: strong                      # strong = mosaic + mixup + flips
+stage1_auto_label_weight: 0.5               # loss weight for auto-labeled samples
+
+# ── Stage 2: Hand-labeled only fine-tuning ──
+stage2_epochs: 30
+stage2_batch: 8
+stage2_lr0: 0.0005
+stage2_lrf: 0.01
+stage2_augment: light                       # light = flips only, no mosaic/mixup
+stage2_freeze_backbone: true                # freeze backbone layers in stage 2
+
+# ── General ──
+device: cuda
+workers: 4
+output_dir: custom/output/detection
+seed: 42
+save_period: 10                             # save checkpoint every N epochs
+
+# ── Validation ──
+val_split_ratio: 0.2                        # fraction of hand-labeled data for validation
+conf_threshold: 0.5                         # confidence threshold for validation
+iou_threshold: 0.5                          # IoU threshold for validation

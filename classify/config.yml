@@ -1,0 +1,57 @@
+# ── SWAT 3-class Few-Shot Classification Config ──
+# Classes: face (0), license_plate (1), badge (2)
+
+# ── Dataset ──
+dataset: face_badge_plate
+dataset_root: data/face_badge_plate
+
+# ── Model ──
+model_cfg: vitb32_openclip_laion400m    # ViT-B/32 pretrained on LAION-400M
+                                         # Alternatives: vitb16_openclip_laion400m, vitb32_openclip_laion2b
+
+# ── Training Data ──
+data_source: fewshot+retrieved          # fewshot | retrieved | fewshot+retrieved
+shots: 5                                # Number of labeled examples per class
+seed: 1                                 # Data split seed
+fewshot_ratio: 0.5                      # Ratio of few-shot data in mixed batches
+
+# ── Training Method ──
+#   finetune         Standard fine-tuning
+#   finetune-mixed   Half batch retrieved + half few-shot (needs fewshot+retrieved)
+#   mixup            Mixup augmentation within data
+#   cutmix           CutMix augmentation within data
+#   mixup-fs         Mixup between retrieved and few-shot (SWAT paper method)
+#   cutmix-fs        CutMix between retrieved and few-shot
+method: mixup-fs
+
+# ── Classifier Init ──
+cls_init: text                          # text = from CLIP prompts | random
+
+# ── Hyperparameters ──
+epochs: 20                              # Stage 1 epochs
+stage2_epochs: 10                       # Stage 2 classifier probing epochs
+bsz: 32
+lr_classifier: 0.0001
+lr_backbone: 0.000001
+wd: 0.01
+temperature: 0.07                       # Initial logit scale = ln(1/temperature)
+
+# ── Augmentation ──
+mixup_alpha: 1.0                        # Beta distribution alpha
+mix_prob: 0.5                           # Probability of applying mixup/cutmix
+cutmix_beta: 1.0
+
+# ── Features ──
+use_wsft: true                          # WiSE-FT weight-space ensembling
+use_tau_norm: true                      # Tau normalization
+skip_stage2: false                      # Skip Stage 2 classifier probing
+
+# ── Checkpointing ──
+save_ckpt: true
+save_freq: 5                            # Save checkpoint every N epochs
+early_stop: true
+
+# ── System ──
+num_workers: 4
+output_dir: custom/output
+training_seed: 42

@@ -1,0 +1,21 @@
+# 深度学习框架
+torch
+torchvision
+
+# CLIP 视觉-语言模型（主）
+open-clip-torch
+# OpenAI CLIP（retrieve_data.py 的可选回退，open_clip 不可用时才需要）
+# clip
+
+# 目标检测
+ultralytics
+
+# 图像 / 视频处理
+opencv-python
+Pillow
+scikit-image
+
+# 数值与数据
+numpy
+PyYAML
+requests
